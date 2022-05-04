@@ -12,17 +12,11 @@
         height="190"
         gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"
       >
-        <v-avatar
-          size="70"
-        >
-          <v-icon size="70">mdi-account-circle</v-icon>
-        </v-avatar>
-        <div class="mt-2 subtitle-1 font-weight-bold">
-          Name Lastname
-        </div>
-        <div class="subtitle-2">
-          @user_name
-        </div>
+        <user-profile
+          :name="$store.state.userSettings.name"
+          :username="$store.state.userSettings.username"
+          :file="$store.state.userSettings.file"
+        />
       </v-img>
 
       <v-divider></v-divider>
@@ -88,6 +82,8 @@
       <snackbar/>
     </v-main>
 
+    <user-settings v-if="$store.state.showSettingsDialog"/>
+
   </v-app>
 </template>
 
@@ -96,6 +92,8 @@ import Snackbar from '@/components/General/Snackbar.vue'
 import SearchBar from  '@/components/Tools/SearchBar.vue'
 import LiveDateTime from '@/components/Tools/LiveDateTime.vue'
 import AddTaskInput from '@/components/Todo/AddTaskInput.vue'
+import UserProfile from '@/components/General/UserProfile'
+import UserSettings from '@/components/General/UserSettings'
 
 
 export default {
@@ -104,7 +102,9 @@ export default {
     "snackbar": Snackbar,
     "search-bar": SearchBar,
     "live-date-time": LiveDateTime,
-    'add-task-input': AddTaskInput,
+    "add-task-input": AddTaskInput,
+    "user-settings" : UserSettings,
+    "user-profile" : UserProfile,
   },
   data: () => ({
     drawer: false,
@@ -115,6 +115,7 @@ export default {
   }),
   mounted(){
     this.$store.dispatch('loadTasks')
+    this.$store.dispatch('loadSettings')
   }
 };
 </script>

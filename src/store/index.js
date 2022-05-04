@@ -9,6 +9,12 @@ let db = new Localbase('db')
 
 export default new Vuex.Store({
   state: {
+    showSettingsDialog : false,
+    userSettings: {
+      name: '',
+      username: '',
+      file: null
+    },
     appTitle: process.env.VUE_APP_TITLE,
     search: null,
     sorting: false,
@@ -80,7 +86,18 @@ export default new Vuex.Store({
     },
     toggleSorting(state){
       state.sorting = !state.sorting
-    }
+    },
+    toggleUserSettings(state){
+      state.showSettingsDialog = !state.showSettingsDialog
+    },
+    saveSettings(state, {name,username,file}){
+      state.userSettings.name = name
+      state.userSettings.username = username
+      state.userSettings.file = file
+    },
+    loadSettings(state, settings){
+      state.userSettings = settings
+    },
   },
   actions: {
     loadTasks(context){
@@ -128,6 +145,16 @@ export default new Vuex.Store({
       }).then(()=>{
         context.commit('setDueDate',{id, date})
         context.commit('showSnackbar','Due date updated!')
+      })
+    },
+    saveSettings(context, settings){
+      db.collection('settings').set([settings]).then(()=>{
+        context.commit('saveSettings', settings)
+      })
+    },
+    loadSettings(context){
+      db.collection('settings').get().then(settings => {
+        context.commit('loadSettings', ...settings)
       })
     }
   },
