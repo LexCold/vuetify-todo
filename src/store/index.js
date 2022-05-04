@@ -6,7 +6,6 @@ Vue.use(Vuex)
 
 let db = new Localbase('db')
 
-
 export default new Vuex.Store({
   state: {
     showSettingsDialog : false,
@@ -154,7 +153,13 @@ export default new Vuex.Store({
     },
     loadSettings(context){
       db.collection('settings').get().then(settings => {
-        context.commit('loadSettings', ...settings)
+        console.log(settings);
+        if(settings.length){
+          context.commit('loadSettings', ...settings)
+        }
+        else{
+          context.commit('loadSettings', {name: "New User", username: "new_user", file: null})
+        }
       })
     }
   },

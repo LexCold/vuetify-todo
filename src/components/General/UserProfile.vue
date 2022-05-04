@@ -38,8 +38,8 @@ export default {
   computed:{
     nameInitials(){
       if(this.name){
-        let names = this.name.split(' ', 2) 
-        if(names.length = 1){
+        let names = this.name.split(' ', 2)
+        if(names.length < 2){
           return `${names[0].slice(0,1)}`
         }
         else{
